@@ -1,12 +1,15 @@
 package com.fiap.repository;
 
 
-import com.fiap.entity.DeviceEntity;
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- * Created by logonrm on 25/03/2017.
- */
+import com.fiap.entity.DeviceEntity;
+import com.fiap.entity.UserEntity;
+
+
 public interface DeviceRepository extends JpaRepository<DeviceEntity, Long> {
 
+	Set<DeviceEntity> findByUser(UserEntity userId);
 }

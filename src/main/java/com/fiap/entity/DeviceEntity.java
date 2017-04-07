@@ -1,66 +1,56 @@
 package com.fiap.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-/**
- * Created by logonrm on 25/03/2017.
- */
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "device", schema = "public", catalog = "smartenergy")
 public class DeviceEntity {
-    private int id;
-    private String serialNumber;
-    private Integer userId;
 
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID", unique=true, nullable=false)
+	private long id;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	@Column(name = "SERIALNUMBER", unique=true, nullable=false)
+	private String serialNumber;
 
-    @Basic
-    @Column(name = "serial_number")
-    public String getSerialNumber() {
-        return serialNumber;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USERID", unique=false, nullable=false)
+	@JsonIgnore
+	private UserEntity user;
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
+	public long getId() {
+		return id;
+	}
 
-    @Basic
-    @Column(name = "user_id")
-    public Integer getUserId() {
-        return userId;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	public String getSerialNumber() {
+		return serialNumber;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 
-        DeviceEntity that = (DeviceEntity) o;
+	public UserEntity getUserEntity() {
+		return user;
+	}
 
-        if (id != that.id) return false;
-        if (serialNumber != null ? !serialNumber.equals(that.serialNumber) : that.serialNumber != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+	public void setUserEntity(UserEntity user) {
+		this.user = user;
+	}
 
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (serialNumber != null ? serialNumber.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        return result;
-    }
 }
